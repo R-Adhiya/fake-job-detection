@@ -33,13 +33,25 @@ STYLES = """
 /* ---- Header gradient ---- */
 .app-header {
     background: linear-gradient(135deg, #1e1b4b 0%, #312e81 50%, #4338ca 100%);
-    padding: 28px 36px 22px 36px;
+    padding: 32px 36px 26px 36px;
     border-radius: 14px;
     margin-bottom: 24px;
-    color: #fff;
+    text-align: center;
 }
-.app-header h1 { margin: 0; font-size: 2rem; font-weight: 800; letter-spacing: -0.5px; }
-.app-header p  { margin: 6px 0 0 0; font-size: 0.95rem; opacity: 0.8; }
+.app-header h1 {
+    margin: 0;
+    font-size: 2.4rem;
+    font-weight: 800;
+    letter-spacing: -0.5px;
+    color: #FFFFFF !important;
+    text-shadow: 0 2px 8px rgba(0,0,0,0.3);
+}
+.app-header p {
+    margin: 8px 0 0 0;
+    font-size: 0.97rem;
+    color: #e0e7ff !important;
+    opacity: 1;
+}
 
 /* ---- Input card ---- */
 .input-card {
@@ -58,10 +70,10 @@ STYLES = """
     font-family: sans-serif;
     box-shadow: 0 4px 24px rgba(0,0,0,0.12);
 }
-.result-card h2 { margin: 0 0 8px 0; font-size: 1.8rem; font-weight: 800; }
-.result-card p  { margin: 0; font-size: 1.05rem; opacity: 0.92; }
-.fraud-card { background: linear-gradient(135deg, #ff4b4b 0%, #c0392b 100%); color: #fff; }
-.legit-card { background: linear-gradient(135deg, #21c55d 0%, #16a34a 100%); color: #fff; }
+.result-card h2 { margin: 0 0 8px 0; font-size: 1.8rem; font-weight: 800; color: #fff; }
+.result-card p  { margin: 0; font-size: 1.05rem; color: #fff; }
+.fraud-card { background: linear-gradient(135deg, #ff4b4b 0%, #c0392b 100%); }
+.legit-card { background: linear-gradient(135deg, #21c55d 0%, #16a34a 100%); }
 
 /* ---- Metric boxes ---- */
 div[data-testid="stMetric"] {
@@ -69,6 +81,14 @@ div[data-testid="stMetric"] {
     border: 1px solid #e2e8f0;
     border-radius: 10px;
     padding: 14px 18px;
+}
+div[data-testid="stMetric"] label {
+    color: #374151 !important;
+    font-weight: 600 !important;
+}
+div[data-testid="stMetric"] [data-testid="stMetricValue"] {
+    color: #111827 !important;
+    font-weight: 700 !important;
 }
 
 /* ---- Info tip box ---- */
@@ -85,13 +105,29 @@ div[data-testid="stMetric"] {
 
 /* ---- Sidebar ---- */
 section[data-testid="stSidebar"] { background: #0f172a; }
-section[data-testid="stSidebar"] * { color: #e2e8f0 !important; }
+section[data-testid="stSidebar"] * { color: #f1f5f9 !important; }
 section[data-testid="stSidebar"] .stMarkdown h2,
 section[data-testid="stSidebar"] .stMarkdown h3 { color: #a5b4fc !important; }
 
+/* ---- Sidebar info boxes (Best model / Fraud threshold) ---- */
+section[data-testid="stSidebar"] code {
+    background: #1e293b !important;
+    color: #f8fafc !important;
+    font-weight: 600 !important;
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-size: 0.9rem;
+}
+section[data-testid="stSidebar"] p,
+section[data-testid="stSidebar"] span,
+section[data-testid="stSidebar"] strong {
+    color: #f1f5f9 !important;
+    font-weight: 500 !important;
+}
+
 /* ---- General ---- */
-.stTextArea textarea { background: #ffffff; border-radius: 8px; }
-.stTextInput input   { background: #ffffff; border-radius: 8px; }
+.stTextArea textarea { background: #ffffff; border-radius: 8px; color: #111827; }
+.stTextInput input   { background: #ffffff; border-radius: 8px; color: #111827; }
 </style>
 """
 st.markdown(STYLES, unsafe_allow_html=True)
@@ -163,12 +199,27 @@ with st.sidebar:
             )
             fig_sb.update_layout(
                 height=300,
-                margin=dict(l=0, r=0, t=36, b=0),
-                legend=dict(orientation="h", y=-0.3),
+                margin=dict(l=0, r=0, t=36, b=60),
+                legend=dict(
+                    orientation="h", y=-0.4,
+                    font=dict(color="#f1f5f9", size=12),
+                    itemsizing="constant",
+                    tracegroupgap=8,
+                ),
                 plot_bgcolor="rgba(0,0,0,0)",
                 paper_bgcolor="rgba(0,0,0,0)",
-                font=dict(color="#e2e8f0"),
-                title_font=dict(color="#a5b4fc"),
+                font=dict(color="#f1f5f9", size=12),
+                title_font=dict(color="#a5b4fc", size=13),
+                xaxis=dict(
+                    tickfont=dict(color="#f1f5f9", size=11),
+                    title_font=dict(color="#f1f5f9"),
+                    gridcolor="rgba(255,255,255,0.1)",
+                ),
+                yaxis=dict(
+                    tickfont=dict(color="#f1f5f9", size=11),
+                    title_font=dict(color="#f1f5f9"),
+                    gridcolor="rgba(255,255,255,0.1)",
+                ),
             )
             st.plotly_chart(fig_sb, use_container_width=True)
 
@@ -192,11 +243,11 @@ with st.sidebar:
                     )
                 )
                 fig_donut.update_layout(
-                    title=dict(text="Class Distribution", font=dict(color="#a5b4fc")),
+                    title=dict(text="Class Distribution", font=dict(color="#a5b4fc", size=13)),
                     height=260,
                     margin=dict(l=0, r=0, t=36, b=0),
                     paper_bgcolor="rgba(0,0,0,0)",
-                    legend=dict(font=dict(color="#e2e8f0")),
+                    legend=dict(font=dict(color="#f1f5f9", size=12)),
                     showlegend=True,
                 )
                 st.plotly_chart(fig_donut, use_container_width=True)
@@ -217,7 +268,13 @@ with st.sidebar:
                 fig_acc.update_layout(
                     height=250, margin=dict(l=0,r=0,t=36,b=0),
                     paper_bgcolor="rgba(0,0,0,0)", plot_bgcolor="rgba(0,0,0,0)",
-                    font=dict(color="#e2e8f0"), title_font=dict(color="#a5b4fc"),
+                    font=dict(color="#f1f5f9", size=12),
+                    title_font=dict(color="#a5b4fc", size=13),
+                    xaxis=dict(
+                        tickfont=dict(color="#f1f5f9", size=11),
+                        gridcolor="rgba(255,255,255,0.1)",
+                    ),
+                    yaxis=dict(tickfont=dict(color="#f1f5f9", size=11)),
                     showlegend=False, coloraxis_showscale=False,
                 )
                 st.plotly_chart(fig_acc, use_container_width=True)
@@ -399,7 +456,11 @@ with tab1:
                     fig_nlp.update_layout(
                         height=max(280, len(nlp_terms) * 28),
                         margin=dict(l=0, r=0, t=40, b=0),
-                        yaxis={"categoryorder": "total ascending"},
+                        yaxis={"categoryorder": "total ascending", "tickfont": {"color": "#111827", "size": 12}},
+                        xaxis={"tickfont": {"color": "#111827"}, "gridcolor": "#e5e7eb"},
+                        font=dict(color="#111827"),
+                        title_font=dict(color="#111827", size=14),
+                        legend=dict(font=dict(color="#111827", size=12)),
                         plot_bgcolor="rgba(0,0,0,0)",
                         paper_bgcolor="rgba(0,0,0,0)",
                     )
@@ -425,7 +486,11 @@ with tab1:
                     fig_meta.update_layout(
                         height=max(280, len(meta_feats) * 28),
                         margin=dict(l=0, r=0, t=40, b=0),
-                        yaxis={"categoryorder": "total ascending"},
+                        yaxis={"categoryorder": "total ascending", "tickfont": {"color": "#111827", "size": 12}},
+                        xaxis={"tickfont": {"color": "#111827"}, "gridcolor": "#e5e7eb"},
+                        font=dict(color="#111827"),
+                        title_font=dict(color="#111827", size=14),
+                        legend=dict(font=dict(color="#111827", size=12)),
                         plot_bgcolor="rgba(0,0,0,0)",
                         paper_bgcolor="rgba(0,0,0,0)",
                     )
@@ -488,13 +553,19 @@ with tab1:
                         )
                     fig_radar.update_layout(
                         polar=dict(
-                            radialaxis=dict(visible=True, range=[0, 1]),
-                            bgcolor="rgba(0,0,0,0)",
+                            radialaxis=dict(
+                                visible=True, range=[0, 1],
+                                tickfont=dict(color="#111827", size=11),
+                                gridcolor="rgba(0,0,0,0.15)",
+                            ),
+                            angularaxis=dict(tickfont=dict(color="#111827", size=12)),
+                            bgcolor="rgba(255,255,255,0.05)",
                         ),
-                        title="🕸️ Model Comparison Radar",
+                        title=dict(text="🕸️ Model Comparison Radar", font=dict(color="#111827", size=15)),
                         height=420,
                         margin=dict(l=40, r=40, t=60, b=40),
                         paper_bgcolor="rgba(0,0,0,0)",
+                        legend=dict(font=dict(color="#111827", size=12)),
                         showlegend=True,
                     )
                     st.plotly_chart(fig_radar, use_container_width=True)
@@ -531,14 +602,15 @@ with tab1:
             )
             fig_risk.update_layout(
                 barmode="stack",
-                title="📊 Risk Zone Breakdown",
-                xaxis=dict(range=[0, 100], title="Fraud Probability (%)"),
+                title=dict(text="📊 Risk Zone Breakdown", font=dict(color="#111827", size=14)),
+                xaxis=dict(range=[0, 100], title="Fraud Probability (%)", tickfont=dict(color="#111827"), title_font=dict(color="#111827")),
                 yaxis=dict(showticklabels=False),
                 height=160,
                 margin=dict(l=0, r=0, t=44, b=30),
                 paper_bgcolor="rgba(0,0,0,0)",
                 plot_bgcolor="rgba(0,0,0,0)",
-                legend=dict(orientation="h", y=-0.5),
+                legend=dict(orientation="h", y=-0.6, font=dict(color="#111827", size=12)),
+                font=dict(color="#111827"),
             )
             st.plotly_chart(fig_risk, use_container_width=True)
 
