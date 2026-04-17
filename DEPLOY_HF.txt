@@ -1,0 +1,10 @@
+Hugging Face Spaces (Streamlit) — quick steps
+==============================================
+1. Create a new Space: SDK = Streamlit, hardware = CPU basic.
+2. Upload this project: streamlit_app.py, predict_utils.py, config.py, preprocess.py,
+   requirements.txt, .streamlit/config.toml, and the trained folder models/ (fraud_pipeline.joblib).
+3. If the dataset filename differs, keep DataSet.csv or Dataset.csv next to the app, or only ship models/ for inference-only demo.
+4. Main file: app.py (imports streamlit_app). HF Streamlit SDK defaults to app.py at repo root.
+5. First run may download NLTK data; allow a cold start once.
+
+Optional: train inside Space by adding train.py + DataSet.csv and a startup script (not recommended for free tier due to time).

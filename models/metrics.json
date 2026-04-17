@@ -1,0 +1,84 @@
+{
+  "best_model": "hybrid_lr_tuned_threshold",
+  "saved_artifact": "FraudDetectionModel(FullHybridModel + threshold)",
+  "model_path": "C:\\Users\\akhil\\Desktop\\fakejob\\models\\fraud_pipeline.joblib",
+  "metrics": [
+    {
+      "model": "hybrid_lr_tuned_threshold",
+      "accuracy": 0.9890939597315436,
+      "precision_fraud": 0.9036144578313253,
+      "recall_fraud": 0.8670520231213873,
+      "f1_fraud": 0.8849557522123894,
+      "confusion_matrix": [
+        [
+          3387,
+          16
+        ],
+        [
+          23,
+          150
+        ]
+      ],
+      "threshold": 0.5499999999999999,
+      "best_cv_f1": 0.8113725094752118
+    },
+    {
+      "model": "naive_bayes",
+      "accuracy": 0.8887024608501118,
+      "precision_fraud": 0.2958257713248639,
+      "recall_fraud": 0.9421965317919075,
+      "f1_fraud": 0.45027624309392267,
+      "confusion_matrix": [
+        [
+          3015,
+          388
+        ],
+        [
+          10,
+          163
+        ]
+      ]
+    },
+    {
+      "model": "random_forest",
+      "accuracy": 0.9748322147651006,
+      "precision_fraud": 1.0,
+      "recall_fraud": 0.4797687861271676,
+      "f1_fraud": 0.6484375,
+      "confusion_matrix": [
+        [
+          3403,
+          0
+        ],
+        [
+          90,
+          83
+        ]
+      ]
+    },
+    {
+      "model": "logistic_regression_text_only",
+      "accuracy": 0.9451901565995525,
+      "precision_fraud": 0.4662756598240469,
+      "recall_fraud": 0.9190751445086706,
+      "f1_fraud": 0.6186770428015564,
+      "confusion_matrix": [
+        [
+          3221,
+          182
+        ],
+        [
+          14,
+          159
+        ]
+      ]
+    }
+  ],
+  "hybrid_threshold": 0.5499999999999999,
+  "randomized_search_best_params": {
+    "clf__C": 24.369735256766045,
+    "preprocess__txt__max_df": 0.95,
+    "preprocess__txt__max_features": 7000,
+    "preprocess__txt__min_df": 2
+  }
+}
